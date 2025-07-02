@@ -6,6 +6,8 @@ This command provides smart commit functionality with automatic version manageme
 
 - Auto-detects commit type (patch/minor/major) from file changes
 - Updates docs/CHANGELOG.md with new version entry and proper formatting
+- Updates docs/file-structure.md with current project structure using mermaid diagram
+- Updates README.md to be concise and reference docs/file-structure.md
 - Creates properly formatted git commits with Claude Code attribution
 - Uses docs/CHANGELOG.md as the single source of truth for version tracking
 - Generates unique changelog section headers to avoid MD024 linter conflicts

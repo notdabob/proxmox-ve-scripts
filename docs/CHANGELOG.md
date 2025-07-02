@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2025-01-02
+
+### Added in v0.4.0
+
+- Project README.md with quick start guide and documentation links
+- docs/file-structure.md with mermaid diagram visualization
+- Enhanced commit.md to maintain file-structure.md and README.md
+
+### Enhanced in v0.4.0
+
+- Updated commit command to automatically update documentation
+- Improved project documentation structure and navigation
+
 ## [0.3.0] - 2025-01-02
 
 ### Fixed in v0.3.0
