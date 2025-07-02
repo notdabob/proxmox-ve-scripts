@@ -5,11 +5,13 @@ Automated deployment scripts for MCP (Model Context Protocol) servers on ProxMox
 ## Quick Start
 
 1. **Deploy MCP Server VM** (on ProxMox host):
+
    ```bash
    ./scripts/proxmox_create_mcp_vm.sh
    ```
 
 2. **Configure MCP Clients** (on client machine):
+
    ```bash
    python3 scripts/mcp_client_autoconfig.py
    ```
@@ -35,6 +37,17 @@ Automated deployment scripts for MCP (Model Context Protocol) servers on ProxMox
 ## Security Note
 
 Default credentials are provided for automation. **Change these before production use.**
+
+## Usage
+
+This structure supports:
+
+1. **Automated VM deployment** on ProxMox hosts
+2. **MCP server orchestration** via Docker Compose
+3. **Client auto-configuration** for multiple AI assistants
+4. **Documentation maintenance** with Claude Code integration
+
+Last updated: 2025-01-02
 
 ## License
 
