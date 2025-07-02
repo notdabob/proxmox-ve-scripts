@@ -5,6 +5,23 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.0] - 2025-07-02
+
+### Added in v0.5.0 at 2025-07-02 16:32:12 EDT
+
+- Automatic Ubuntu Server ISO download functionality if not present
+- ISO storage location discovery with intelligent path detection
+- Tree command installation check and usage for visual directory exploration
+- Interactive storage selection when multiple ISO locations exist
+- Automatic ProxMox storage name resolution from file paths
+- Visual feedback showing existing ISOs in each storage location
+
+### Enhanced in v0.5.0 at 2025-07-02 16:32:12 EDT
+
+- Improved script robustness with better error handling
+- Better user experience with visual storage exploration
+- Automatic path-to-storage-name mapping using /etc/pve/storage.cfg
+
 ## [0.4.2] - 2025-07-02
 
 ### Fixed in v0.4.2 at 2025-07-02 13:59:27 EDT

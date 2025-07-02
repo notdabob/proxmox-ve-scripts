@@ -14,7 +14,7 @@ This repository contains ProxMox VE automation scripts for creating and configur
 # Make scripts executable
 chmod +x scripts/proxmox_create_mcp_vm.sh
 
-# Deploy MCP server VM
+# Deploy MCP server VM (will auto-download Ubuntu ISO if needed)
 ./scripts/proxmox_create_mcp_vm.sh
 
 # Check VM status
@@ -65,12 +65,13 @@ The project implements a two-phase deployment pattern:
 
 The main script (`scripts/proxmox_create_mcp_vm.sh`) orchestrates:
 
-1. **VM Creation**: Uses ProxMox `qm` CLI to create VM with virtio drivers, SCSI storage
-2. **Manual Installation**: Pauses for Ubuntu Server 22.04 LTS installation
-3. **Network Discovery**: Uses ProxMox guest agent to detect VM IP (`qm guest cmd`)
-4. **SSH Setup**: Configures passwordless SSH access
-5. **Docker Installation**: Deploys Docker CE and Docker Compose
-6. **MCP Deployment**: Creates Docker Compose configurations for each MCP server
+1. **ISO Management**: Auto-discovers storage locations and downloads Ubuntu ISO if needed
+2. **VM Creation**: Uses ProxMox `qm` CLI to create VM with virtio drivers, SCSI storage
+3. **Manual Installation**: Pauses for Ubuntu Server 22.04 LTS installation
+4. **Network Discovery**: Uses ProxMox guest agent to detect VM IP (`qm guest cmd`)
+5. **SSH Setup**: Configures passwordless SSH access
+6. **Docker Installation**: Deploys Docker CE and Docker Compose
+7. **MCP Deployment**: Creates Docker Compose configurations for each MCP server
 
 ### Phase 2: Client Auto-Configuration
 
@@ -105,9 +106,10 @@ The script uses hardcoded configuration at the top of `scripts/proxmox_create_mc
 ### Server Deployment
 
 - ProxMox VE host with `qm` command access
-- Ubuntu 22.04 Server ISO uploaded to ProxMox storage
+- Internet connection for downloading Ubuntu Server ISO (or pre-downloaded ISO)
 - `sshpass` utility available for SSH automation
 - Network bridge `vmbr0` configured
+- `tree` command (will be auto-installed if missing)
 
 ### Client Configuration Prerequisites
 
