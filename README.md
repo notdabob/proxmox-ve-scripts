@@ -4,7 +4,24 @@ Automated deployment scripts for MCP (Model Context Protocol) servers on ProxMox
 
 [![GitHub Repository](https://img.shields.io/badge/GitHub-proxmox--ve--scripts-blue?logo=github)](https://github.com/notdabob/proxmox-ve-scripts)
 
-## Installation
+## 🚀 Quick Start (One-Liner)
+
+Run this command directly on your ProxMox host shell to download and start the setup:
+
+```bash
+git clone https://github.com/notdabob/proxmox-ve-scripts.git && cd proxmox-ve-scripts && chmod +x scripts/*.sh && ./scripts/proxmox_create_mcp_vm.sh
+```
+
+This will:
+1. Clone the repository
+2. Make scripts executable
+3. Launch the interactive VM creation wizard
+4. Auto-download Ubuntu ISO if needed
+5. Create and configure your Docker host VM with MCP servers
+
+## Detailed Installation
+
+If you prefer to install step-by-step:
 
 ```bash
 # Clone the repository
@@ -15,18 +32,20 @@ cd proxmox-ve-scripts
 chmod +x scripts/*.sh scripts/modules/*.sh
 ```
 
-## Quick Start
+## Deployment Options
 
 ### Option 1: All-in-One Deployment
 
-1. **Deploy MCP Server VM** (on ProxMox host):
-   ```bash
-   ./scripts/proxmox_create_mcp_vm.sh
-   ```
+Deploy everything with a single script:
+```bash
+./scripts/proxmox_create_mcp_vm.sh
+```
 
 ### Option 2: Modular Deployment
 
-1. **Create Docker Host VM** (on ProxMox host):
+For more control, deploy in separate steps:
+
+1. **Create Docker Host VM**:
    ```bash
    ./scripts/create_docker_host_vm.sh
    ```
@@ -38,10 +57,10 @@ chmod +x scripts/*.sh scripts/modules/*.sh
 
 ### Configure Clients
 
-3. **Configure MCP Clients** (on client machine):
-   ```bash
-   python3 scripts/mcp_client_autoconfig.py
-   ```
+After deployment, configure your AI clients (Claude Desktop, Perplexity, etc.):
+```bash
+python3 scripts/mcp_client_autoconfig.py
+```
 
 ## Features
 

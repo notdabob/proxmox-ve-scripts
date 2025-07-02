@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.2] - 2025-07-02
+
+### Enhanced in v0.7.2 at 2025-07-02 17:07:17 EDT
+
+- Added one-liner quick start command for ProxMox host terminal
+- Reorganized README with clearer section flow
+- Added emoji for quick start section visibility
+- Improved deployment options documentation
+- Made instructions more beginner-friendly
+
 ## [0.7.1] - 2025-07-02
 
 ### Enhanced in v0.7.1 at 2025-07-02 17:01:38 EDT
