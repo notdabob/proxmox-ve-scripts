@@ -24,6 +24,7 @@ graph TD
     D --> N[create_mcp_docker_vm.sh]
     D --> O[deploy_mcp_to_docker_vm.sh]
     D --> P[mcp_client_autoconfig.py]
+    D --> Q[proxmox_docker_vm_complete.sh]
 
     style A fill:#f9f,stroke:#333,stroke-width:4px
     style B fill:#bbf,stroke:#333,stroke-width:2px
@@ -56,3 +57,4 @@ graph TD
 - **`create_mcp_docker_vm.sh`** - Creates Docker VM using ProxmoxVE Community Scripts
 - **`deploy_mcp_to_docker_vm.sh`** - Deploys MCP servers to an existing Docker VM
 - **`mcp_client_autoconfig.py`** - Python script for automatic MCP client configuration
+- **`proxmox_docker_vm_complete.sh`** - Alternative complete Docker VM creation with Portainer

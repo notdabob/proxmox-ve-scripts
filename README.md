@@ -25,7 +25,21 @@ This uses the industry-standard [ProxmoxVE Community Scripts](https://github.com
 
 ## Alternative Methods
 
-### Method 1: Create VM Only (ProxmoxVE Community Script)
+### Method 1: Complete Docker VM with Portainer
+
+```bash
+./scripts/proxmox_docker_vm_complete.sh
+```
+
+This alternative approach provides:
+
+- Interactive configuration wizard
+- Debian 12 with Docker CE pre-installed
+- Portainer for container management
+- Automatic QEMU Guest Agent setup
+- Custom disk sizing options
+
+### Method 2: Create VM Only (ProxmoxVE Community Script)
 
 ```bash
 VMID=120 HOSTNAME=mcp-docker CORE=4 MEMORY=4096 DISK=40 \
@@ -34,7 +48,7 @@ bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/v
 
 Then deploy MCP servers separately.
 
-### Method 2: Step-by-Step
+### Method 3: Step-by-Step
 
 ```bash
 # 1. Create Docker VM

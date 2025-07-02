@@ -11,8 +11,11 @@ This repository contains ProxMox VE automation scripts for deploying MCP (Model 
 ### One-Command Deployment (ProxMox Host)
 
 ```bash
-# Complete deployment (VM + MCP servers)
+# Option 1: Complete deployment (VM + MCP servers)
 ./scripts/one-liner-deploy.sh
+
+# Option 2: Complete Docker VM with Portainer (Alternative approach)
+./scripts/proxmox_docker_vm_complete.sh
 
 # Or using environment variables
 VMID=150 HOSTNAME=my-mcp MEMORY=8192 ./scripts/one-liner-deploy.sh
@@ -74,9 +77,9 @@ curl http://<VM_IP>:7003/health  # Filesystem MCP
 
 ## Architecture
 
-The project now uses a simplified two-phase deployment:
+The project now offers multiple deployment approaches:
 
-### Phase 1: VM Creation
+### Approach 1: ProxmoxVE Community Scripts (Recommended)
 
 Uses the ProxmoxVE Community `docker-vm.sh` script which:
 
@@ -85,7 +88,19 @@ Uses the ProxmoxVE Community `docker-vm.sh` script which:
 3. **Configures Networking** - Automatic DHCP with QEMU Guest Agent
 4. **Sets Default Password** - root:proxmox (should be changed)
 
-### Phase 2: MCP Server Deployment
+Then deploys MCP servers via `deploy_mcp_to_docker_vm.sh`.
+
+### Approach 2: Complete Docker VM Script (Alternative)
+
+The `proxmox_docker_vm_complete.sh` script provides:
+
+1. **Debian 12 Cloud Image** - Downloads and customizes latest Debian
+2. **Docker Pre-installation** - Uses virt-customize for image preparation
+3. **Portainer Deployment** - Automatic container management UI
+4. **QEMU Guest Agent** - Pre-configured for ProxMox integration
+5. **Interactive Setup** - User-friendly configuration prompts
+
+### MCP Server Deployment
 
 The deployment script (`deploy_mcp_to_docker_vm.sh`) performs:
 

@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-07-02
+
+### Added in v1.1.0 at 2025-07-02 18:29:00 EDT
+
+- Alternative complete Docker VM creation script with Portainer
+- Interactive configuration wizard for VM settings
+- Automatic Debian 12 cloud image download and customization
+- Pre-installed Docker CE with systemd service management
+- Automatic Portainer deployment on first boot
+- QEMU Guest Agent pre-configured for ProxMox integration
+- Custom disk sizing with automatic image expansion
+- Docker status check script included in VM
+
+### Enhanced in v1.1.0 at 2025-07-02 18:29:00 EDT
+
+- More deployment options for different use cases
+- Better container management with Portainer UI
+- Improved documentation for alternative approaches
+
 ## [1.0.1] - 2025-07-02
 
 ### Fixed in v1.0.1 at 2025-07-02 18:02:17 EDT
