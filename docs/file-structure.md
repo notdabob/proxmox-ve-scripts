@@ -26,11 +26,13 @@ graph TD
     D --> P[deploy_mcp_servers.sh]
     D --> Q[modules/]
     D --> R[config/]
+    D --> S[quick_deploy.sh]
+    D --> T[proxmox_create_mcp_vm_v2.sh]
 
-    Q --> S[proxmox_vm_create.sh]
-    Q --> T[docker_deploy.sh]
+    Q --> U[proxmox_vm_create.sh]
+    Q --> V[docker_deploy.sh]
 
-    R --> U[docker-host.conf.example]
+    R --> W[docker-host.conf.example]
 
     style A fill:#f9f,stroke:#333,stroke-width:4px
     style B fill:#bbf,stroke:#333,stroke-width:2px
@@ -62,6 +64,8 @@ graph TD
 ### `scripts/` Directory
 
 - **`proxmox_create_mcp_vm.sh`** - Original all-in-one script for VM creation and MCP deployment
+- **`proxmox_create_mcp_vm_v2.sh`** - Improved version with better error handling and logging
+- **`quick_deploy.sh`** - Simplified script for quick VM creation
 - **`mcp_client_autoconfig.py`** - Python script for automatic MCP client configuration
 - **`create_docker_host_vm.sh`** - Modular script for creating Docker-optimized VMs
 - **`deploy_mcp_servers.sh`** - Deploy MCP servers to existing Docker host VMs

@@ -13,7 +13,7 @@ Automated deployment scripts for MCP (Model Context Protocol) servers on ProxMox
 **Step 2:** Copy and paste this single command:
 
 ```bash
-git clone https://github.com/notdabob/proxmox-ve-scripts.git && cd proxmox-ve-scripts && chmod +x scripts/*.sh scripts/modules/*.sh && ./scripts/proxmox_create_mcp_vm.sh
+git clone https://github.com/notdabob/proxmox-ve-scripts.git && cd proxmox-ve-scripts && chmod +x scripts/*.sh && ./scripts/quick_deploy.sh
 ```
 
 **Step 3:** Follow the interactive prompts
@@ -27,18 +27,30 @@ That's it! The script will:
 
 ---
 
+## Alternative One-Liner (No Git Required)
+
+If you just want to create a VM quickly without cloning the repo:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/notdabob/proxmox-ve-scripts/main/scripts/quick_deploy.sh | bash
+```
+
+---
+
 ## Alternative Deployment Methods
 
 ### Manual Step-by-Step
 
 If you already cloned the repository and want to run scripts individually:
 
-**Option 1: All-in-One Script**
+#### Option 1: All-in-One Script
+
 ```bash
 ./scripts/proxmox_create_mcp_vm.sh
 ```
 
-**Option 2: Modular Deployment**
+#### Option 2: Modular Deployment
+
 ```bash
 # First create the VM
 ./scripts/create_docker_host_vm.sh

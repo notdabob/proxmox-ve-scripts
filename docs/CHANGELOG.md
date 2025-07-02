@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.8.0] - 2025-07-02
+
+### Added in v0.8.0 at 2025-07-02 17:29:11 EDT
+
+- Created simplified quick_deploy.sh script for easier VM creation
+- Added robust proxmox_create_mcp_vm_v2.sh with better error handling
+- Added curl one-liner option that doesn't require git clone
+- Implemented proper logging with timestamps
+- Added DEBUG mode support for troubleshooting
+
+### Fixed in v0.8.0 at 2025-07-02 17:29:11 EDT
+
+- Completely rewrote ISO detection logic to avoid sed errors
+- Fixed output contamination by properly separating stdout/stderr
+- Improved storage detection with better parsing of /etc/pve/storage.cfg
+- Fixed markdown linting issues in README
+
+### Enhanced in v0.8.0 at 2025-07-02 17:29:11 EDT
+
+- Simplified user experience with quick_deploy.sh
+- Better error messages and logging throughout
+- More defensive programming with proper error checks
+- Removed complex regex operations for better compatibility
+
 ## [0.7.3] - 2025-07-02
 
 ### Fixed in v0.7.3 at 2025-07-02 17:20:25 EDT
