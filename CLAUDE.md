@@ -4,172 +4,173 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This repository contains ProxMox VE automation scripts for creating and configuring virtual machines with MCP (Model Context Protocol) servers. The primary purpose is to automate the deployment of Docker-based MCP server infrastructure on ProxMox virtualization hosts.
+This repository contains ProxMox VE automation scripts for deploying MCP (Model Context Protocol) servers using industry-standard tools. It leverages the [ProxmoxVE Community Scripts](https://github.com/community-scripts/ProxmoxVE) to create Docker-ready VMs and then deploys a suite of MCP servers.
 
 ## Common Commands
 
-### Server Deployment (ProxMox Host)
+### One-Command Deployment (ProxMox Host)
 
 ```bash
-# Make scripts executable
-chmod +x scripts/proxmox_create_mcp_vm.sh
+# Complete deployment (VM + MCP servers)
+./scripts/one-liner-deploy.sh
 
-# Deploy MCP server VM (will auto-download Ubuntu ISO if needed)
-./scripts/proxmox_create_mcp_vm.sh
+# Or using environment variables
+VMID=150 HOSTNAME=my-mcp MEMORY=8192 ./scripts/one-liner-deploy.sh
+```
 
+### Step-by-Step Deployment
+
+```bash
+# Step 1: Create Docker VM using ProxmoxVE Community Script
+./scripts/create_mcp_docker_vm.sh
+
+# Step 2: Deploy MCP servers (after VM boots)
+./scripts/deploy_mcp_to_docker_vm.sh <VM_IP>
+
+# Or auto-detect IP
+./scripts/deploy_mcp_to_docker_vm.sh auto 120
+```
+
+### Direct ProxmoxVE Community Script Usage
+
+```bash
+# Create Docker VM directly
+VMID=120 HOSTNAME=docker CORE=4 MEMORY=4096 DISK=40 \
+bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/vm/docker-vm.sh)"
+```
+
+### VM Management
+
+```bash
 # Check VM status
 qm status 120
 
-# View VM configuration
-qm config 120
+# Get VM IP address
+qm guest cmd 120 network-get-interfaces
 
 # Connect to VM console
 qm terminal 120
 
-# SSH to deployed VM (after deployment)
-ssh mcpadmin@<VM_IP>
+# SSH to deployed VM (default password: proxmox)
+ssh root@<VM_IP>
+
+# Use MCP management command (on VM)
+ssh root@<VM_IP> 'mcp status'
+ssh root@<VM_IP> 'mcp logs'
+ssh root@<VM_IP> 'mcp restart'
 ```
 
 ### Client Configuration
 
 ```bash
-# Install Python dependencies
-pip3 install requests
-
 # Run auto-configuration
 python3 scripts/mcp_client_autoconfig.py
 
-# Test MCP server connectivity manually
-curl http://<VM_IP>:7001/health
-curl http://<VM_IP>:7002/health
-```
-
-### Troubleshooting Commands
-
-```bash
-# On ProxMox host - check VM network interfaces
-qm guest cmd 120 network-get-interfaces
-
-# On ProxMox host - monitor VM agent
-qm agent 120 ping
-
-# On client - test MCP server discovery
-python3 -c "import socket; print(socket.gethostbyname('mcp-server'))"
+# Test MCP server connectivity
+curl http://<VM_IP>:7001/health  # Context7
+curl http://<VM_IP>:7002/health  # Desktop Commander
+curl http://<VM_IP>:7003/health  # Filesystem MCP
 ```
 
 ## Architecture
 
-The project implements a two-phase deployment pattern:
+The project now uses a simplified two-phase deployment:
 
-### Phase 1: VM Creation and Configuration
+### Phase 1: VM Creation
 
-The main script (`scripts/proxmox_create_mcp_vm.sh`) orchestrates:
+Uses the ProxmoxVE Community `docker-vm.sh` script which:
 
-1. **ISO Management**: Auto-discovers storage locations and downloads Ubuntu ISO if needed
-2. **VM Creation**: Uses ProxMox `qm` CLI to create VM with virtio drivers, SCSI storage
-3. **Manual Installation**: Pauses for Ubuntu Server 22.04 LTS installation
-4. **Network Discovery**: Uses ProxMox guest agent to detect VM IP (`qm guest cmd`)
-5. **SSH Setup**: Configures passwordless SSH access
-6. **Docker Installation**: Deploys Docker CE and Docker Compose
-7. **MCP Deployment**: Creates Docker Compose configurations for each MCP server
+1. **Creates Debian 12 VM** - Latest stable Debian with cloud-init support
+2. **Installs Docker CE** - Docker and Docker Compose pre-installed
+3. **Configures Networking** - Automatic DHCP with QEMU Guest Agent
+4. **Sets Default Password** - root:proxmox (should be changed)
 
-### Phase 2: Client Auto-Configuration
+### Phase 2: MCP Server Deployment
 
-The Python script (`scripts/mcp_client_autoconfig.py`) performs:
+The deployment script (`deploy_mcp_to_docker_vm.sh`) performs:
 
-1. **Service Discovery**: Attempts hostname resolution, falls back to subnet scanning
-2. **Health Validation**: Tests each MCP server endpoint
-3. **Configuration Updates**: Modifies JSON configs for multiple AI clients
+1. **Docker Compose Setup** - Creates compose file with all MCP servers
+2. **Service Deployment** - Deploys Context7, Desktop Commander, Filesystem MCP
+3. **Health Checks** - Configures health monitoring for each service
+4. **Management Tools** - Installs `mcp` command for easy control
 
-### Key Components
+## Configuration
 
-- **VM Creation**: Uses ProxMox `qm` commands to create VMs with virtio drivers and SCSI storage
-- **Network Discovery**: Automatically detects VM IP using ProxMox guest agent
-- **Docker Deployment**: Installs Docker and deploys pre-configured MCP servers (Context7, Desktop Commander)
-- **Service Orchestration**: Uses Docker Compose for container management
-- **Client Auto-Configuration**: Python script that discovers MCP servers and configures client applications
+### VM Configuration
 
-## Configuration Variables
-
-The script uses hardcoded configuration at the top of `scripts/proxmox_create_mcp_vm.sh`:
+Set these environment variables before running scripts:
 
 - `VMID`: ProxMox VM identifier (default: 120)
-- `VMNAME`: VM display name (default: "mcp-server")
-- `VMRAM`: Memory allocation in MB (default: 4096)
-- `VMDISK_SIZE`: Virtual disk size (default: 32G)
-- `UBUNTU_LTS_VERSION`: Ubuntu version to use (leave empty for interactive selection)
-- `UBUNTU_PREFER_LATEST`: Auto-detect latest point release (default: true)
-- `MCP_SERVERS`: Array of MCP server names to deploy
-- `BRIDGE`: Network bridge (default: "vmbr0")
+- `HOSTNAME`: VM hostname (default: mcp-docker)
+- `CORE`: CPU cores (default: 4)
+- `MEMORY`: RAM in MB (default: 4096)
+- `DISK`: Disk size in GB (default: 40)
+
+### MCP Servers
+
+Currently deployed MCP servers:
+
+- **Context7 MCP** (port 7001) - SQLite-based context management
+- **Desktop Commander** (port 7002) - System control capabilities
+- **Filesystem MCP** (port 7003) - File system access
 
 ## Prerequisites
 
-### Server Deployment
+### ProxMox Host Requirements
 
-- ProxMox VE host with `qm` command access
-- Internet connection for downloading Ubuntu Server ISO (or pre-downloaded ISO)
-- `sshpass` utility available for SSH automation
-- Network bridge `vmbr0` configured
-- `tree` command (will be auto-installed if missing)
+- ProxMox VE 7.0 or later
+- Internet connection for downloading Debian cloud image
+- `wget` or `curl` available
+- SSH client with `sshpass` for deployment
 
-### Client Configuration Prerequisites
+### Network Requirements
 
-- Python 3 with `requests` library
-- Network access to MCP VM
-- Write permissions to client configuration directories
-
-## Usage
-
-### VM Creation and Server Deployment
-
-Execute the main script from the ProxMox host:
-
-```bash
-./scripts/proxmox_create_mcp_vm.sh
-```
-
-The script requires manual intervention during Ubuntu installation - it will pause and wait for user confirmation before proceeding with automation.
-
-### Client Auto-Configuration
-
-After VM deployment, configure MCP clients using the Python auto-configuration script:
-
-```bash
-python3 scripts/mcp_client_autoconfig.py
-```
-
-This script:
-
-- Automatically discovers the MCP VM on the network (by hostname or subnet scan)
-- Tests MCP server availability via health checks
-- Updates configuration files for Claude Desktop, Perplexity, and MCP SuperAssistant
-- Supports multiple MCP client applications simultaneously
-
-The client script updates these configuration paths:
-
-- Claude Desktop: `~/Library/Application Support/Claude/claude_desktop_config.json`
-- Perplexity: `~/.perplexity/mcp.json`
-- MCP SuperAssistant: `~/mcpconfig.json`
+- DHCP available on the network bridge (usually vmbr0)
+- Ports 7001-7003 accessible from client machines
 
 ## Security Considerations
 
-- Default credentials are hardcoded (`VMUSER="mcpadmin"`, `VMPASS="changeme"`)
-- SSH strict host key checking is disabled for automation
-- Script requires modification of credentials before production use
+- Default VM password is `proxmox` - **CHANGE THIS IMMEDIATELY**
+- MCP servers are exposed on all interfaces - consider firewall rules
+- Docker socket is mounted for Desktop Commander - understand the implications
 
-## Adding New MCP Servers
+## Troubleshooting
 
-To add a new MCP server to the deployment:
+### VM Creation Issues
 
-1. Edit `scripts/proxmox_create_mcp_vm.sh`:
-   - Add server name to `MCP_SERVERS` array
-   - The script will create a Docker Compose file for it
+```bash
+# Check if VM exists
+qm list | grep 120
 
-2. Edit `scripts/mcp_client_autoconfig.py`:
-   - Add port mapping to `MCP_PORTS` dictionary
-   - Ensure port doesn't conflict with existing services
+# Check ProxMox storage
+pvesm status
 
-3. The deployment script expects MCP servers to:
-   - Be available as Docker images
-   - Expose a `/health` endpoint
-   - Run on unique ports starting from 7001
+# View VM creation logs
+journalctl -u pvedaemon -f
+```
+
+### MCP Deployment Issues
+
+```bash
+# Test SSH connectivity
+ssh root@<VM_IP> 'docker --version'
+
+# Check Docker status on VM
+ssh root@<VM_IP> 'systemctl status docker'
+
+# View MCP logs
+ssh root@<VM_IP> 'cd /opt/mcp && docker compose logs'
+```
+
+### Network Issues
+
+```bash
+# Check VM network from ProxMox host
+ping <VM_IP>
+
+# Check QEMU Guest Agent
+qm agent 120 ping
+
+# View VM network config
+qm guest cmd 120 network-get-interfaces
+```

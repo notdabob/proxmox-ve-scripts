@@ -6,74 +6,70 @@ Automated deployment scripts for MCP (Model Context Protocol) servers on ProxMox
 
 ---
 
-## 🚀 GET STARTED IN 10 SECONDS
+## 🚀 INSTANT DEPLOY (Recommended)
 
-**Step 1:** Open your ProxMox host terminal
-
-**Step 2:** Copy and paste this single command:
+**One command to create a Docker VM with MCP servers:**
 
 ```bash
-git clone https://github.com/notdabob/proxmox-ve-scripts.git && cd proxmox-ve-scripts && chmod +x scripts/*.sh && ./scripts/quick_deploy.sh
+git clone https://github.com/notdabob/proxmox-ve-scripts.git && cd proxmox-ve-scripts && chmod +x scripts/*.sh && ./scripts/one-liner-deploy.sh
 ```
 
-**Step 3:** Follow the interactive prompts
-
-That's it! The script will:
-- ✅ Download all necessary files
-- ✅ Make scripts executable  
-- ✅ Launch the setup wizard
-- ✅ Auto-download Ubuntu ISO if needed
-- ✅ Create your Docker VM with MCP servers
+This uses the industry-standard [ProxmoxVE Community Scripts](https://github.com/community-scripts/ProxmoxVE) to:
+- ✅ Create a Debian 12 VM with Docker pre-installed
+- ✅ Auto-configure networking and storage
+- ✅ Deploy MCP servers (Context7, Desktop Commander, Filesystem)
+- ✅ Set up management commands
 
 ---
 
-## Alternative One-Liner (No Git Required)
+## Alternative Methods
 
-If you just want to create a VM quickly without cloning the repo:
-
-```bash
-curl -fsSL https://raw.githubusercontent.com/notdabob/proxmox-ve-scripts/main/scripts/quick_deploy.sh | bash
-```
-
----
-
-## Alternative Deployment Methods
-
-### Manual Step-by-Step
-
-If you already cloned the repository and want to run scripts individually:
-
-#### Option 1: All-in-One Script
+### Method 1: Create VM Only (ProxmoxVE Community Script)
 
 ```bash
-./scripts/proxmox_create_mcp_vm.sh
+VMID=120 HOSTNAME=mcp-docker CORE=4 MEMORY=4096 DISK=40 \
+bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/vm/docker-vm.sh)"
 ```
 
-#### Option 2: Modular Deployment
+Then deploy MCP servers separately.
+
+### Method 2: Step-by-Step
 
 ```bash
-# First create the VM
-./scripts/create_docker_host_vm.sh
+# 1. Create Docker VM
+./scripts/create_mcp_docker_vm.sh
 
-# Then deploy MCP servers
-./scripts/deploy_mcp_servers.sh <VM_IP>
+# 2. Deploy MCP servers (after VM boots)
+./scripts/deploy_mcp_to_docker_vm.sh <VM_IP>
 ```
 
-### Configure MCP Clients
+## What Gets Deployed
 
-After deployment, configure your AI clients (on client machine):
+- **Debian 12 VM** with Docker CE pre-installed
+- **MCP Servers**:
+  - Context7 MCP (Port 7001) - SQLite context management
+  - Desktop Commander (Port 7002) - System control capabilities
+  - Filesystem MCP (Port 7003) - File system access
+- **Management Tool**: `mcp` command for easy control
+
+## Client Configuration
+
+After deployment, configure your AI clients (Claude Desktop, etc.):
 
 ```bash
 python3 scripts/mcp_client_autoconfig.py
 ```
 
+This will auto-detect the MCP servers and configure your clients.
+
 ## Features
 
-- **Automated VM Creation** - Creates Ubuntu VMs with Docker pre-configured
-- **Modular Architecture** - Reusable modules for VM creation and Docker deployment
-- **Network Integration** - Docker containers with full host network access (192.168.1.0/24)
-- **MCP Server Deployment** - Deploys multiple MCP servers via Docker Compose
-- **Client Auto-Configuration** - Discovers and configures Claude Desktop, Perplexity, and MCP SuperAssistant
+- **Industry-Standard Base** - Uses proven ProxmoxVE Community Scripts
+- **Automated VM Creation** - Debian 12 VM with Docker CE pre-installed
+- **MCP Server Suite** - Context7, Desktop Commander, and Filesystem MCP servers
+- **Zero Manual Configuration** - Fully automated deployment process
+- **Client Auto-Configuration** - Discovers and configures Claude Desktop, Perplexity, etc.
+- **Management Tools** - Built-in `mcp` command for easy server control
 
 ## Documentation
 

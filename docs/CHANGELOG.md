@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.0] - 2025-07-02
+
+### Changed in v1.0.0 at 2025-07-02 17:52:30 EDT (BREAKING)
+
+- Complete rewrite using ProxmoxVE Community Scripts as base
+- Replaced custom VM creation with industry-standard docker-vm.sh
+- Changed from Ubuntu to Debian 12 as base OS
+- Simplified deployment to just 3 focused scripts
+
+### Added in v1.0.0 at 2025-07-02 17:52:30 EDT
+
+- one-liner-deploy.sh for complete automated deployment
+- create_mcp_docker_vm.sh using ProxmoxVE Community Script
+- deploy_mcp_to_docker_vm.sh for MCP server deployment
+- Built-in MCP management command on VMs
+- Filesystem MCP server to the deployment suite
+- Auto-IP detection capability
+
+### Removed in v1.0.0 at 2025-07-02 17:52:30 EDT
+
+- All custom VM creation logic and modules
+- Ubuntu ISO download functionality
+- Complex configuration system
+- All error-prone custom scripts
+
+### Enhanced in v1.0.0 at 2025-07-02 17:52:30 EDT
+
+- Much simpler and more reliable deployment
+- Better documentation in CLAUDE.md
+- Cleaner project structure
+- Industry-standard base for better compatibility
+
 ## [0.8.0] - 2025-07-02
 
 ### Added in v0.8.0 at 2025-07-02 17:29:11 EDT
