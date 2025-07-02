@@ -13,7 +13,7 @@ Automated deployment scripts for MCP (Model Context Protocol) servers on ProxMox
 **Step 2:** Copy and paste this single command:
 
 ```bash
-git clone https://github.com/notdabob/proxmox-ve-scripts.git && cd proxmox-ve-scripts && chmod +x scripts/*.sh && ./scripts/proxmox_create_mcp_vm.sh
+git clone https://github.com/notdabob/proxmox-ve-scripts.git && cd proxmox-ve-scripts && chmod +x scripts/*.sh scripts/modules/*.sh && ./scripts/proxmox_create_mcp_vm.sh
 ```
 
 **Step 3:** Follow the interactive prompts

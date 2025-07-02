@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.3] - 2025-07-02
+
+### Fixed in v0.7.3 at 2025-07-02 17:20:25 EDT
+
+- Fixed grep -P option error on ProxMox hosts (switched to -E for POSIX compatibility)
+- Fixed array passing issues in ISO location selection
+- Fixed empty custom version handling in Ubuntu selection
+- Redirected status messages to stderr to prevent output contamination
+- Fixed discover_iso_locations to output one directory per line
+- Added missing chmod for modules directory in one-liner command
+
 ## [0.7.2] - 2025-07-02
 
 ### Enhanced in v0.7.2 at 2025-07-02 17:07:17 EDT

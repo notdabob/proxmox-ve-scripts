@@ -44,7 +44,11 @@ select_ubuntu_version() {
             3) echo "20.04"; return ;;
             4) 
                 read -p "Enter Ubuntu version (e.g., 22.04): " custom_version
-                echo "$custom_version"
+                if [ -z "$custom_version" ]; then
+                    echo "22.04"  # Default if empty
+                else
+                    echo "$custom_version"
+                fi
                 return
                 ;;
             *) echo "Invalid selection. Please try again." ;;
@@ -56,7 +60,7 @@ get_latest_ubuntu_info() {
     local lts_version="$1"
     local prefer_latest="$2"
     
-    echo "Detecting latest Ubuntu ${lts_version} release..."
+    echo "Detecting latest Ubuntu ${lts_version} release..." >&2
     
     # Try to fetch the release page to find latest point release
     local release_page_url="https://releases.ubuntu.com/${lts_version}/"
@@ -64,15 +68,16 @@ get_latest_ubuntu_info() {
     
     if command -v curl &> /dev/null; then
         # Parse the directory listing to find the latest point release
+        # Use extended regex instead of Perl regex for better compatibility
         latest_point_release=$(curl -s "$release_page_url" | \
-            grep -oP "ubuntu-${lts_version}\.\d+-live-server-amd64\.iso" | \
+            grep -Eo "ubuntu-${lts_version}\.[0-9]+-live-server-amd64\.iso" | \
             sort -V | tail -n1 | \
-            grep -oP "${lts_version}\.\d+" || echo "")
+            sed -E "s/.*-(${lts_version}\.[0-9]+)-.*/\1/" || echo "")
     elif command -v wget &> /dev/null; then
         latest_point_release=$(wget -qO- "$release_page_url" | \
-            grep -oP "ubuntu-${lts_version}\.\d+-live-server-amd64\.iso" | \
+            grep -Eo "ubuntu-${lts_version}\.[0-9]+-live-server-amd64\.iso" | \
             sort -V | tail -n1 | \
-            grep -oP "${lts_version}\.\d+" || echo "")
+            sed -E "s/.*-(${lts_version}\.[0-9]+)-.*/\1/" || echo "")
     fi
     
     # If we couldn't detect or user prefers specific version
@@ -89,12 +94,12 @@ get_latest_ubuntu_info() {
     local iso_name="ubuntu-${latest_point_release}-live-server-amd64.iso"
     local iso_url="https://releases.ubuntu.com/${lts_version}/${iso_name}"
     
-    echo "Detected Ubuntu version: ${latest_point_release}"
+    echo "Detected Ubuntu version: ${latest_point_release}" >&2
     echo "$iso_url|$iso_name"
 }
 
 discover_iso_locations() {
-    echo "Discovering ISO storage locations on ProxMox host..."
+    echo "Discovering ISO storage locations on ProxMox host..." >&2
     local iso_dirs=()
     
     # Check common ProxMox storage mount points
@@ -124,11 +129,14 @@ discover_iso_locations() {
         fi
     done
     
-    echo "${unique_dirs[@]}"
+    # Output each directory on a separate line
+    for dir in "${unique_dirs[@]}"; do
+        echo "$dir"
+    done
 }
 
 select_iso_location() {
-    local iso_locations=($1)
+    local iso_locations=("$@")
     
     if [ ${#iso_locations[@]} -eq 0 ]; then
         echo "No ISO storage locations found. Creating default location..."
@@ -291,10 +299,10 @@ echo "Using Ubuntu ISO: $UBUNTU_ISO_NAME"
 
 # Discover ISO locations
 echo "Scanning for ISO storage locations..."
-iso_locations=($(discover_iso_locations))
+readarray -t iso_locations < <(discover_iso_locations)
 
 # Let user select ISO location
-selected_iso_path=$(select_iso_location "${iso_locations[*]}")
+selected_iso_path=$(select_iso_location "${iso_locations[@]}")
 echo "Selected ISO storage path: $selected_iso_path"
 
 # Download Ubuntu ISO if needed
