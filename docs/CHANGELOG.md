@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.0] - 2025-07-02
+
+### Added in v0.7.0 at 2025-07-02 16:54:54 EDT
+
+- Modular architecture with reusable bash modules
+- Separate VM creation module (`modules/proxmox_vm_create.sh`)
+- Docker deployment module (`modules/docker_deploy.sh`)
+- Standalone Docker host VM creation script
+- Separate MCP server deployment script
+- Configuration file support for Docker host VMs
+- Network configuration for Docker containers with host network access
+- Helper scripts for Docker management on VMs
+- Traefik reverse proxy option for better routing
+
+### Enhanced in v0.7.0 at 2025-07-02 16:54:54 EDT
+
+- Better separation of concerns between VM creation and service deployment
+- Improved Docker networking with macvlan support for host network access
+- More flexible deployment options (all-in-one or modular)
+- Better error handling and status reporting
+
 ## [0.6.0] - 2025-07-02
 
 ### Added in v0.6.0 at 2025-07-02 16:35:29 EDT

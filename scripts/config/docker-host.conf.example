@@ -1,0 +1,32 @@
+# Docker Host VM Configuration
+# Copy this file to docker-host.conf and modify as needed
+
+# VM Configuration
+VMID=120
+VMNAME="docker-host"
+VMRAM=4096
+VMDISK_SIZE=32G
+VMCORES=2
+
+# Ubuntu Version
+UBUNTU_LTS_VERSION=""        # Leave empty for interactive selection
+UBUNTU_PREFER_LATEST=true    # Auto-detect latest point release
+
+# VM User Configuration
+VMUSER="docker"
+VMPASS="changeme"           # IMPORTANT: Change this!
+
+# Network Configuration
+BRIDGE="vmbr0"              # ProxMox network bridge
+HOST_NETWORK="192.168.1.0/24"  # Your local network CIDR
+VLAN_TAG=""                 # Optional VLAN tag
+
+# Storage Configuration
+VMDISK="local-lvm"          # ProxMox storage for VM disk
+
+# MCP Servers to Deploy
+MCP_SERVERS="context7-mcp desktop-commander"
+
+# Advanced Options
+VMNET_MODEL="virtio"        # Network adapter model (virtio recommended)
+VMSOCKETS=1                 # Number of CPU sockets

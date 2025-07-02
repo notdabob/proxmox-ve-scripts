@@ -4,21 +4,37 @@ Automated deployment scripts for MCP (Model Context Protocol) servers on ProxMox
 
 ## Quick Start
 
-1. **Deploy MCP Server VM** (on ProxMox host):
+### Option 1: All-in-One Deployment
 
+1. **Deploy MCP Server VM** (on ProxMox host):
    ```bash
    ./scripts/proxmox_create_mcp_vm.sh
    ```
 
-2. **Configure MCP Clients** (on client machine):
+### Option 2: Modular Deployment
 
+1. **Create Docker Host VM** (on ProxMox host):
+   ```bash
+   ./scripts/create_docker_host_vm.sh
+   ```
+
+2. **Deploy MCP Servers** (after VM creation):
+   ```bash
+   ./scripts/deploy_mcp_servers.sh <VM_IP>
+   ```
+
+### Configure Clients
+
+3. **Configure MCP Clients** (on client machine):
    ```bash
    python3 scripts/mcp_client_autoconfig.py
    ```
 
 ## Features
 
-- **Automated VM Creation** - Creates Ubuntu 22.04 VMs with Docker pre-configured
+- **Automated VM Creation** - Creates Ubuntu VMs with Docker pre-configured
+- **Modular Architecture** - Reusable modules for VM creation and Docker deployment
+- **Network Integration** - Docker containers with full host network access (192.168.1.0/24)
 - **MCP Server Deployment** - Deploys multiple MCP servers via Docker Compose
 - **Client Auto-Configuration** - Discovers and configures Claude Desktop, Perplexity, and MCP SuperAssistant
 

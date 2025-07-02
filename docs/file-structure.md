@@ -22,11 +22,22 @@ graph TD
 
     D --> M[proxmox_create_mcp_vm.sh]
     D --> N[mcp_client_autoconfig.py]
+    D --> O[create_docker_host_vm.sh]
+    D --> P[deploy_mcp_servers.sh]
+    D --> Q[modules/]
+    D --> R[config/]
+
+    Q --> S[proxmox_vm_create.sh]
+    Q --> T[docker_deploy.sh]
+
+    R --> U[docker-host.conf.example]
 
     style A fill:#f9f,stroke:#333,stroke-width:4px
     style B fill:#bbf,stroke:#333,stroke-width:2px
     style C fill:#bbf,stroke:#333,stroke-width:2px
     style D fill:#bbf,stroke:#333,stroke-width:2px
+    style Q fill:#bfb,stroke:#333,stroke-width:2px
+    style R fill:#bfb,stroke:#333,stroke-width:2px
 ```
 
 ## File Descriptions
@@ -50,5 +61,12 @@ graph TD
 
 ### `scripts/` Directory
 
-- **`proxmox_create_mcp_vm.sh`** - Main automation script for VM creation and MCP server deployment
+- **`proxmox_create_mcp_vm.sh`** - Original all-in-one script for VM creation and MCP deployment
 - **`mcp_client_autoconfig.py`** - Python script for automatic MCP client configuration
+- **`create_docker_host_vm.sh`** - Modular script for creating Docker-optimized VMs
+- **`deploy_mcp_servers.sh`** - Deploy MCP servers to existing Docker host VMs
+- **`modules/`** - Reusable bash modules
+  - **`proxmox_vm_create.sh`** - ProxMox VM creation functions
+  - **`docker_deploy.sh`** - Docker installation and deployment functions
+- **`config/`** - Configuration files
+  - **`docker-host.conf.example`** - Example configuration for Docker host VMs
