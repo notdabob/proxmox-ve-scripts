@@ -15,6 +15,7 @@ git clone https://github.com/notdabob/proxmox-ve-scripts.git && cd proxmox-ve-sc
 ```
 
 This uses the industry-standard [ProxmoxVE Community Scripts](https://github.com/community-scripts/ProxmoxVE) to:
+
 - ✅ Create a Debian 12 VM with Docker pre-installed
 - ✅ Auto-configure networking and storage
 - ✅ Deploy MCP servers (Context7, Desktop Commander, Filesystem)
@@ -79,22 +80,13 @@ This will auto-detect the MCP servers and configure your clients.
 
 ## Requirements
 
-- ProxMox VE host with Ubuntu 22.04 ISO
+- ProxMox VE host with internet connection
 - Python 3 with requests library (for client configuration)
 - Network connectivity between clients and MCP VM
 
 ## Security Note
 
-Default credentials are provided for automation. **Change these before production use.**
-
-## Usage
-
-This structure supports:
-
-1. **Automated VM deployment** on ProxMox hosts
-2. **MCP server orchestration** via Docker Compose
-3. **Client auto-configuration** for multiple AI assistants
-4. **Documentation maintenance** with Claude Code integration
+Default VM credentials: `root:proxmox` - **Change these immediately after deployment!**
 
 ## Contributing
 

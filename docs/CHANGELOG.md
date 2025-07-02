@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2025-07-02
+
+### Fixed in v1.0.1 at 2025-07-02 18:02:17 EDT
+
+- Removed Ubuntu ISO reference from README requirements
+- Updated mcp_client_autoconfig.py with correct default hostname (mcp-docker)
+- Added filesystem-mcp server to client configuration
+- Cleaned up README by removing deprecated usage section
+
 ## [1.0.0] - 2025-07-02
 
 ### Changed in v1.0.0 at 2025-07-02 17:52:30 EDT (BREAKING)

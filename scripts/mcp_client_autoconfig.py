@@ -4,11 +4,11 @@ import socket
 import requests
 
 # --- CONFIGURATION ---
-VM_HOSTNAME = "mcp-server"
+VM_HOSTNAME = "mcp-docker"  # Default hostname from docker-vm.sh
 MCP_PORTS = {
     "context7": 7001,
     "desktop-commander": 7002,
-    # Add more here...
+    "filesystem-mcp": 7003,
 }
 CLAUDE_CONFIG_PATH = os.path.expanduser("~/Library/Application Support/Claude/claude_desktop_config.json")
 PERPLEXITY_CONFIG_PATH = os.path.expanduser("~/.perplexity/mcp.json")
