@@ -12,10 +12,10 @@ This command provides smart commit functionality with automatic version manageme
 - Uses docs/CHANGELOG.md as the single source of truth for version tracking
 - Generates unique changelog section headers to avoid MD024 linter conflicts
 
-**Important**: Changelog sections use version-specific headers to prevent markdown linter conflicts:
+**Important**: Changelog sections use version-specific headers with timestamps to prevent markdown linter conflicts:
 
-- Use format like "### Added in v2.4.0" instead of just "### Added"
-- Include version number and timestamp in section headers
+- Use format like "### Added in v2.4.0 at 2025-01-02 10:11:37 EST" instead of just "### Added"
+- Include version number AND timestamp in section headers
 - This prevents MD024/no-duplicate-heading errors across different versions
 
 Version increment logic:
@@ -26,9 +26,9 @@ Version increment logic:
 
 The script intelligently determines whether changes warrant patch (bug fixes), minor (new features), or major (breaking changes) version increments based on the files modified.
 
-When creating changelog entries, always use version-specific section headers like:
+When creating changelog entries, always use version-specific section headers with timestamps like:
 
-- "### Added in v2.4.0"
-- "### Changed in v2.4.0"
-- "### Removed in v2.4.0"
-- "### Enhanced in v2.4.0"
+- "### Added in v2.4.0 at 2025-01-02 10:11:37 EST"
+- "### Changed in v2.4.0 at 2025-01-02 10:11:37 EST"
+- "### Removed in v2.4.0 at 2025-01-02 10:11:37 EST"
+- "### Enhanced in v2.4.0 at 2025-01-02 10:11:37 EST"
