@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.2] - 2025-07-02
+
+### Fixed in v0.4.2 at 2025-07-02 13:59:27 EDT
+
+- Added missing newline at end of CHANGELOG.md file
+
 ## [0.4.1] - 2025-01-02
 
 ### Fixed in v0.4.1 at 2025-01-02 13:56:56 EST
