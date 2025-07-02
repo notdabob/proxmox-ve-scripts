@@ -97,7 +97,8 @@ The script uses hardcoded configuration at the top of `scripts/proxmox_create_mc
 - `VMNAME`: VM display name (default: "mcp-server")
 - `VMRAM`: Memory allocation in MB (default: 4096)
 - `VMDISK_SIZE`: Virtual disk size (default: 32G)
-- `VMISO`: Path to Ubuntu ISO image in ProxMox storage
+- `UBUNTU_LTS_VERSION`: Ubuntu version to use (leave empty for interactive selection)
+- `UBUNTU_PREFER_LATEST`: Auto-detect latest point release (default: true)
 - `MCP_SERVERS`: Array of MCP server names to deploy
 - `BRIDGE`: Network bridge (default: "vmbr0")
 

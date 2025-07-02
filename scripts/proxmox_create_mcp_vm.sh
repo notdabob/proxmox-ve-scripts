@@ -7,8 +7,9 @@ VMNAME="mcp-server"
 VMDISK="local-lvm"
 VMRAM=4096
 VMDISK_SIZE=32G
-UBUNTU_ISO_URL="https://releases.ubuntu.com/22.04.5/ubuntu-22.04.5-live-server-amd64.iso"
-UBUNTU_ISO_NAME="ubuntu-22.04.5-live-server-amd64.iso"
+# Ubuntu version configuration
+UBUNTU_LTS_VERSION=""        # Leave empty to prompt user, or set to "20.04", "22.04", "24.04"
+UBUNTU_PREFER_LATEST=true    # Set to true to auto-detect latest point release
 VMUSER="mcpadmin"
 VMPASS="changeme"
 BRIDGE="vmbr0"
@@ -20,6 +21,76 @@ install_tree_if_needed() {
         echo "Installing tree command..."
         apt-get update && apt-get install -y tree
     fi
+}
+
+select_ubuntu_version() {
+    echo ""
+    echo "========================================="
+    echo "Select Ubuntu LTS Version:"
+    echo "========================================="
+    echo "1. Ubuntu 24.04 LTS (Noble Numbat) - Latest LTS"
+    echo "2. Ubuntu 22.04 LTS (Jammy Jellyfish) - Recommended"
+    echo "3. Ubuntu 20.04 LTS (Focal Fossa)"
+    echo "4. Custom version (specify manually)"
+    echo "========================================="
+    
+    while true; do
+        read -p "Select version (1-4) [2]: " selection
+        selection=${selection:-2}  # Default to option 2
+        
+        case "$selection" in
+            1) echo "24.04"; return ;;
+            2) echo "22.04"; return ;;
+            3) echo "20.04"; return ;;
+            4) 
+                read -p "Enter Ubuntu version (e.g., 22.04): " custom_version
+                echo "$custom_version"
+                return
+                ;;
+            *) echo "Invalid selection. Please try again." ;;
+        esac
+    done
+}
+
+get_latest_ubuntu_info() {
+    local lts_version="$1"
+    local prefer_latest="$2"
+    
+    echo "Detecting latest Ubuntu ${lts_version} release..."
+    
+    # Try to fetch the release page to find latest point release
+    local release_page_url="https://releases.ubuntu.com/${lts_version}/"
+    local latest_point_release=""
+    
+    if command -v curl &> /dev/null; then
+        # Parse the directory listing to find the latest point release
+        latest_point_release=$(curl -s "$release_page_url" | \
+            grep -oP "ubuntu-${lts_version}\.\d+-live-server-amd64\.iso" | \
+            sort -V | tail -n1 | \
+            grep -oP "${lts_version}\.\d+" || echo "")
+    elif command -v wget &> /dev/null; then
+        latest_point_release=$(wget -qO- "$release_page_url" | \
+            grep -oP "ubuntu-${lts_version}\.\d+-live-server-amd64\.iso" | \
+            sort -V | tail -n1 | \
+            grep -oP "${lts_version}\.\d+" || echo "")
+    fi
+    
+    # If we couldn't detect or user prefers specific version
+    if [ -z "$latest_point_release" ] || [ "$prefer_latest" != "true" ]; then
+        # Use known stable versions as fallback
+        case "$lts_version" in
+            "20.04") latest_point_release="20.04.6" ;;
+            "22.04") latest_point_release="22.04.5" ;;
+            "24.04") latest_point_release="24.04.1" ;;
+            *) latest_point_release="${lts_version}.1" ;;
+        esac
+    fi
+    
+    local iso_name="ubuntu-${latest_point_release}-live-server-amd64.iso"
+    local iso_url="https://releases.ubuntu.com/${lts_version}/${iso_name}"
+    
+    echo "Detected Ubuntu version: ${latest_point_release}"
+    echo "$iso_url|$iso_name"
 }
 
 discover_iso_locations() {
@@ -205,6 +276,18 @@ fi
 
 # Install tree if needed
 install_tree_if_needed
+
+# Select Ubuntu version if not specified
+if [ -z "$UBUNTU_LTS_VERSION" ]; then
+    UBUNTU_LTS_VERSION=$(select_ubuntu_version)
+fi
+
+# Get latest Ubuntu version info
+ubuntu_info=$(get_latest_ubuntu_info "$UBUNTU_LTS_VERSION" "$UBUNTU_PREFER_LATEST")
+UBUNTU_ISO_URL=$(echo "$ubuntu_info" | cut -d'|' -f1)
+UBUNTU_ISO_NAME=$(echo "$ubuntu_info" | cut -d'|' -f2)
+
+echo "Using Ubuntu ISO: $UBUNTU_ISO_NAME"
 
 # Discover ISO locations
 echo "Scanning for ISO storage locations..."

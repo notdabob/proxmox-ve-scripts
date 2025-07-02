@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.6.0] - 2025-07-02
+
+### Added in v0.6.0 at 2025-07-02 16:35:29 EDT
+
+- Dynamic Ubuntu version selection with interactive menu
+- Automatic detection of latest Ubuntu point releases
+- Support for multiple Ubuntu LTS versions (20.04, 22.04, 24.04)
+- Custom version input option for flexibility
+
+### Enhanced in v0.6.0 at 2025-07-02 16:35:29 EDT
+
+- Made script future-proof by removing hardcoded Ubuntu versions
+- Improved version detection logic with fallback mechanisms
+- Better user experience with sensible defaults (22.04 LTS recommended)
+
 ## [0.5.0] - 2025-07-02
 
 ### Added in v0.5.0 at 2025-07-02 16:32:12 EDT
