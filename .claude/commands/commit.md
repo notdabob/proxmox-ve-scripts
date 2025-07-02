@@ -5,9 +5,9 @@ Execute the smart commit functionality that automatically handles version bumps 
 This command provides smart commit functionality with automatic version management:
 
 - Auto-detects commit type (patch/minor/major) from file changes
-- Updates CHANGELOG.md with new version entry and proper formatting
+- Updates docs/CHANGELOG.md with new version entry and proper formatting
 - Creates properly formatted git commits with Claude Code attribution
-- Uses CHANGELOG.md as the single source of truth for version tracking
+- Uses docs/CHANGELOG.md as the single source of truth for version tracking
 - Generates unique changelog section headers to avoid MD024 linter conflicts
 
 **Important**: Changelog sections use version-specific headers to prevent markdown linter conflicts:
