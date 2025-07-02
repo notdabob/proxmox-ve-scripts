@@ -2,6 +2,19 @@
 
 Automated deployment scripts for MCP (Model Context Protocol) servers on ProxMox VE.
 
+[![GitHub Repository](https://img.shields.io/badge/GitHub-proxmox--ve--scripts-blue?logo=github)](https://github.com/notdabob/proxmox-ve-scripts)
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/notdabob/proxmox-ve-scripts.git
+cd proxmox-ve-scripts
+
+# Make scripts executable
+chmod +x scripts/*.sh scripts/modules/*.sh
+```
+
 ## Quick Start
 
 ### Option 1: All-in-One Deployment
@@ -63,7 +76,15 @@ This structure supports:
 3. **Client auto-configuration** for multiple AI assistants
 4. **Documentation maintenance** with Claude Code integration
 
-Last updated: 2025-01-02
+Last updated: 2025-07-02
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request to the [GitHub repository](https://github.com/notdabob/proxmox-ve-scripts).
+
+## Issues and Support
+
+If you encounter any issues or have questions, please [open an issue](https://github.com/notdabob/proxmox-ve-scripts/issues) on GitHub.
 
 ## License
 
