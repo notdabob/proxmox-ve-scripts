@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.0] - 2025-07-04
+
+### Enhanced in v2.6.0 at 2025-07-04 00:36:50 EDT
+
+- Improved CLAUDE.md with comprehensive guidance for Claude Code instances
+- Added Key Files section listing main scripts and their purposes
+- Added Development Setup section with repository preparation steps
+- Added Development and Testing section with syntax checking commands
+- Added Script Flow section explaining how scripts interact
+- Enhanced architecture documentation with clear script relationships
+
 ## [2.5.0] - 2025-07-04
 
 ### Added in v2.5.0 at 2025-07-04 00:20:36 EDT

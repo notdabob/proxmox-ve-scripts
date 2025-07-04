@@ -6,7 +6,24 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This repository contains ProxMox VE automation scripts for deploying MCP (Model Context Protocol) servers using industry-standard tools. It leverages the [ProxmoxVE Community Scripts](https://github.com/community-scripts/ProxmoxVE) to create Docker-ready VMs and then deploys a suite of MCP servers.
 
+### Key Files
+
+- `scripts/one-liner-deploy.sh` - Main entry point for complete deployment
+- `scripts/create_mcp_docker_vm.sh` - VM creation wrapper using ProxmoxVE Community Scripts
+- `scripts/deploy_mcp_to_docker_vm.sh` - MCP server deployment to existing VM
+- `scripts/mcp_client_autoconfig.py` - Auto-configures AI clients to connect to MCP servers
+- `scripts/proxmox_docker_vm_complete.sh` - Alternative VM creation with Portainer
+
 ## Common Commands
+
+### Development Setup
+
+```bash
+# Clone and prepare the repository
+git clone https://github.com/notdabob/proxmox-ve-scripts.git
+cd proxmox-ve-scripts
+chmod +x scripts/*.sh
+```
 
 ### One-Command Deployment (ProxMox Host)
 
@@ -75,7 +92,44 @@ curl http://<VM_IP>:7002/health  # Desktop Commander
 curl http://<VM_IP>:7003/health  # Filesystem MCP
 ```
 
+### Development and Testing
+
+```bash
+# Make scripts executable
+chmod +x scripts/*.sh
+
+# Check script syntax (bash -n for syntax check only)
+bash -n scripts/one-liner-deploy.sh
+bash -n scripts/create_mcp_docker_vm.sh
+bash -n scripts/deploy_mcp_to_docker_vm.sh
+
+# Test VM creation with dry run (check without creating)
+VMID=999 ./scripts/create_mcp_docker_vm.sh --dry-run 2>/dev/null || echo "Note: Scripts don't have built-in dry-run mode"
+
+# Python script dependencies
+pip install requests  # For mcp_client_autoconfig.py
+```
+
 ## Architecture
+
+### Script Flow
+
+1. **one-liner-deploy.sh** calls:
+
+   - `create_mcp_docker_vm.sh` (which wraps ProxmoxVE Community docker-vm.sh)
+   - `deploy_mcp_to_docker_vm.sh` (deploys MCP servers to the created VM)
+
+2. **proxmox_docker_vm_complete.sh** is standalone:
+
+   - Downloads Debian cloud image
+   - Customizes with virt-customize
+   - Creates VM with Portainer
+   - Does NOT deploy MCP servers (manual step needed)
+
+3. **mcp_client_autoconfig.py** runs on client machines:
+   - Discovers MCP servers on network
+   - Updates Claude Desktop/Perplexity configs
+   - Tests connectivity
 
 The project now offers multiple deployment approaches:
 
