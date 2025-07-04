@@ -11,12 +11,12 @@ if [ $# -lt 1 ]; then
     echo ""
     echo "Arguments:"
     echo "  VM_IP  - IP address of the Docker VM"
-    echo "  VM_ID  - Optional VM ID to auto-detect IP (default: 120)"
+    echo "  VM_ID  - Optional VM ID to auto-detect IP (default: 210)"
     exit 1
 fi
 
 VM_IP="$1"
-VMID="${2:-120}"
+VMID="${2:-210}"
 
 # If VM_IP is "auto", try to detect it
 if [ "$VM_IP" = "auto" ]; then
@@ -41,64 +41,15 @@ echo "=== Deploying MCP Servers to Docker VM ==="
 echo "Target: root@$VM_IP"
 echo ""
 
-# Create Docker Compose file for MCP servers
-cat << 'EOF' > /tmp/mcp-docker-compose.yml
-version: '3.8'
+# Get the directory where this script is located
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
-services:
-  context7-mcp:
-    image: ghcr.io/modelcontextprotocol/servers/sqlite:latest
-    container_name: context7-mcp
-    restart: unless-stopped
-    ports:
-      - "7001:3000"
-    environment:
-      - MCP_SERVER_NAME=context7
-    volumes:
-      - ./data:/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  desktop-commander:
-    image: mcp/desktop-commander:latest
-    container_name: desktop-commander
-    restart: unless-stopped
-    ports:
-      - "7002:7002"
-    environment:
-      - PORT=7002
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock:ro
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:7002/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-  filesystem-mcp:
-    image: ghcr.io/modelcontextprotocol/servers/filesystem:latest
-    container_name: filesystem-mcp
-    restart: unless-stopped
-    ports:
-      - "7003:3000"
-    environment:
-      - ALLOWED_DIRECTORIES=/data,/workspace
-    volumes:
-      - ./workspace:/workspace
-      - ./data:/data
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
-networks:
-  default:
-    name: mcp-network
-EOF
+# Check if docker-compose.yaml exists
+if [ ! -f "$PROJECT_ROOT/docker-compose.yaml" ]; then
+    echo "Error: docker-compose.yaml not found at $PROJECT_ROOT/docker-compose.yaml"
+    exit 1
+fi
 
 # Create deployment script
 cat << 'DEPLOY_SCRIPT' > /tmp/deploy-mcp.sh
@@ -108,17 +59,8 @@ set -e
 echo "Setting up MCP servers..."
 
 # Create directories
-mkdir -p /opt/mcp/{data,workspace}
+mkdir -p /opt/mcp
 cd /opt/mcp
-
-# Copy docker-compose file
-cat > docker-compose.yml << 'EOF'
-$(cat /tmp/mcp-docker-compose.yml)
-EOF
-
-# Pull images
-echo "Pulling Docker images..."
-docker compose pull
 
 # Start services
 echo "Starting MCP services..."
@@ -126,7 +68,7 @@ docker compose up -d
 
 # Wait for services
 echo "Waiting for services to start..."
-sleep 10
+sleep 15
 
 # Show status
 echo ""
@@ -134,11 +76,22 @@ echo "=== MCP Services Status ==="
 docker compose ps
 echo ""
 
+# Check health status
+echo "=== Health Check Status ==="
+for service in context7-mcp desktop-commander filesystem-mcp; do
+    if docker inspect --format='{{.State.Health.Status}}' $service 2>/dev/null | grep -q "healthy"; then
+        echo "$service: ✓ Healthy"
+    else
+        echo "$service: ⚠ Not healthy yet"
+    fi
+done
+echo ""
+
 # Show endpoints
 echo "=== Available MCP Endpoints ==="
 ip=$(hostname -I | awk '{print $1}')
 echo "Context7 MCP:        http://$ip:7001"
-echo "Desktop Commander:   http://$ip:7002"
+echo "Desktop Commander:   http://$ip:7002"  
 echo "Filesystem MCP:      http://$ip:7003"
 echo ""
 
@@ -148,13 +101,35 @@ cat > /usr/local/bin/mcp << 'HELPER'
 cd /opt/mcp
 
 case "$1" in
-    status) docker compose ps ;;
+    status) 
+        docker compose ps
+        echo ""
+        echo "Health Status:"
+        for service in context7-mcp desktop-commander filesystem-mcp; do
+            health=$(docker inspect --format='{{.State.Health.Status}}' $service 2>/dev/null || echo "unknown")
+            echo "  $service: $health"
+        done
+        ;;
     logs) docker compose logs -f ${2:-} ;;
     restart) docker compose restart ${2:-} ;;
     stop) docker compose stop ${2:-} ;;
     start) docker compose start ${2:-} ;;
     update) docker compose pull && docker compose up -d ;;
-    *) echo "Usage: mcp {status|logs|restart|stop|start|update} [service]" ;;
+    down) docker compose down ;;
+    up) docker compose up -d ;;
+    *) 
+        echo "Usage: mcp {status|logs|restart|stop|start|update|down|up} [service]"
+        echo ""
+        echo "Commands:"
+        echo "  status  - Show service status and health"
+        echo "  logs    - Show logs (follow mode)"
+        echo "  restart - Restart services"
+        echo "  stop    - Stop services"
+        echo "  start   - Start services"
+        echo "  update  - Pull latest images and restart"
+        echo "  down    - Stop and remove containers"
+        echo "  up      - Create and start containers"
+        ;;
 esac
 HELPER
 
@@ -167,17 +142,20 @@ DEPLOY_SCRIPT
 # Copy files to VM
 echo "Copying deployment files to VM..."
 sshpass -p "$DEFAULT_PASS" scp -o StrictHostKeyChecking=no \
-    /tmp/mcp-docker-compose.yml \
+    "$PROJECT_ROOT/docker-compose.yaml" \
     /tmp/deploy-mcp.sh \
     root@$VM_IP:/tmp/
 
-# Execute deployment
+# Move files to correct location and execute deployment
 echo "Deploying MCP servers..."
 sshpass -p "$DEFAULT_PASS" ssh -o StrictHostKeyChecking=no root@$VM_IP \
-    "chmod +x /tmp/deploy-mcp.sh && /tmp/deploy-mcp.sh"
+    "mkdir -p /opt/mcp && \
+     mv /tmp/docker-compose.yaml /opt/mcp/ && \
+     chmod +x /tmp/deploy-mcp.sh && \
+     /tmp/deploy-mcp.sh"
 
 # Clean up
-rm -f /tmp/mcp-docker-compose.yml /tmp/deploy-mcp.sh
+rm -f /tmp/deploy-mcp.sh
 
 echo ""
 echo "=== MCP Deployment Complete! ==="

@@ -13,6 +13,7 @@ This repository contains ProxMox VE automation scripts for deploying MCP (Model 
 - `scripts/deploy_mcp_to_docker_vm.sh` - MCP server deployment to existing VM
 - `scripts/mcp_client_autoconfig.py` - Auto-configures AI clients to connect to MCP servers
 - `scripts/proxmox_docker_vm_complete.sh` - Alternative VM creation with Portainer
+- `docker-compose.yaml` - Docker Compose configuration for MCP services
 
 ## Common Commands
 
@@ -158,9 +159,9 @@ The `proxmox_docker_vm_complete.sh` script provides:
 
 The deployment script (`deploy_mcp_to_docker_vm.sh`) performs:
 
-1. **Docker Compose Setup** - Creates compose file with all MCP servers
-2. **Service Deployment** - Deploys Context7, Desktop Commander, Filesystem MCP
-3. **Health Checks** - Configures health monitoring for each service
+1. **File Transfer** - Copies docker-compose.yaml to the VM
+2. **Service Deployment** - Uses Docker Compose to deploy all MCP servers
+3. **Health Monitoring** - Checks service health status after deployment
 4. **Management Tools** - Installs `mcp` command for easy control
 
 ## Configuration
@@ -177,11 +178,18 @@ Set these environment variables before running scripts:
 
 ### MCP Servers
 
-Currently deployed MCP servers:
+Currently deployed MCP servers (defined in `docker-compose.yaml`):
 
 - **Context7 MCP** (port 7001) - SQLite-based context management
 - **Desktop Commander** (port 7002) - System control capabilities
 - **Filesystem MCP** (port 7003) - File system access
+
+All services include:
+
+- Health check endpoints
+- Automatic restart policies
+- Persistent volume storage
+- Environment configuration
 
 ## Prerequisites
 

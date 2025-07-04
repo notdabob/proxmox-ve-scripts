@@ -1,0 +1,74 @@
+version: '3.8'
+
+services:
+  context7:
+    image: lordsomer/context7-mcp:latest
+    container_name: context7-mcp
+    ports:
+      - "7001:7001"
+    volumes:
+      - context7_data:/app/data
+    environment:
+      - NODE_ENV=production
+      - PORT=7001
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  desktop-commander:
+    image: lordsomer/desktop-commander:latest
+    container_name: desktop-commander
+    ports:
+      - "7002:7002"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - desktop_commander_data:/app/data
+    environment:
+      - NODE_ENV=production
+      - PORT=7002
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7002/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  filesystem-mcp:
+    image: lordsomer/filesystem-mcp:latest
+    container_name: filesystem-mcp
+    ports:
+      - "7003:7003"
+    volumes:
+      - shared_workspace:/workspace
+      - filesystem_mcp_config:/app/config
+    environment:
+      - NODE_ENV=production
+      - PORT=7003
+      - WORKSPACE_DIR=/workspace
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:7003/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  context7_data:
+    driver: local
+  desktop_commander_data:
+    driver: local
+  filesystem_mcp_config:
+    driver: local
+  shared_workspace:
+    driver: local
+
+networks:
+  default:
+    name: mcp-network
+    driver: bridge

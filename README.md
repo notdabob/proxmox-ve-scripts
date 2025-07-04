@@ -61,11 +61,12 @@ Then deploy MCP servers separately.
 ## What Gets Deployed
 
 - **Debian 12 VM** with Docker CE pre-installed
-- **MCP Servers**:
+- **MCP Servers** (via docker-compose.yaml):
   - Context7 MCP (Port 7001) - SQLite context management
   - Desktop Commander (Port 7002) - System control capabilities
   - Filesystem MCP (Port 7003) - File system access
 - **Management Tool**: `mcp` command for easy control
+- **Docker Compose**: Declarative configuration for all services
 
 ## Client Configuration
 
@@ -82,6 +83,7 @@ This will auto-detect the MCP servers and configure your clients.
 - **Industry-Standard Base** - Uses proven ProxmoxVE Community Scripts
 - **Automated VM Creation** - Debian 12 VM with Docker CE pre-installed
 - **MCP Server Suite** - Context7, Desktop Commander, and Filesystem MCP servers
+- **Docker Compose Configuration** - Declarative service definitions with health checks
 - **Zero Manual Configuration** - Fully automated deployment process
 - **Client Auto-Configuration** - Discovers and configures Claude Desktop, Perplexity, etc.
 - **Management Tools** - Built-in `mcp` command for easy server control
