@@ -91,6 +91,13 @@ This will auto-detect the MCP servers and configure your clients.
 - **Project Structure**: See [`docs/file-structure.md`](docs/file-structure.md) for visual project layout
 - **Detailed Guide**: See [`CLAUDE.md`](CLAUDE.md) for comprehensive documentation
 - **Version History**: See [`docs/CHANGELOG.md`](docs/CHANGELOG.md) for release notes
+- **Jupyter Notebooks**: See [`docs/README.ipynb`](docs/README.ipynb) for interactive examples and tutorials
+
+## Jupyter Notebooks
+
+- When you want a new interactive tutorial or code walkthrough, prompt Claude Code with a clear request, such as:
+- “Create a Jupyter notebook that demonstrates how to deploy an MCP server using the scripts in this project
+- with step-by-step explanations and runnable code cells.”
 
 ## Requirements
 

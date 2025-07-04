@@ -189,3 +189,27 @@ qm agent 120 ping
 # View VM network config
 qm guest cmd 120 network-get-interfaces
 ```
+
+## Documentation Best Practices for Claude Code
+
+- Use Markdown (`.md` files) for all primary project documentation, including `README.md`, installation guides, and general how-tos.
+- Ensure Markdown files are clear, concise, and render well on GitHub and other code hosting platforms.
+- Use Jupyter Notebooks (`.ipynb` files) only for interactive tutorials, code walkthroughs, or data-driven examples where executable code and output are needed.
+- Link to Jupyter Notebooks from Markdown documentation when providing interactive or advanced examples.
+- Do not use Jupyter Notebooks for static project documentation or main README files.
+- Keep documentation up to date and ensure all code examples are tested and accurate.
+- Prefer plain Markdown for compatibility and ease of collaboration.
+
+## Jupyter Notebook Usage Guidelines for Claude Code
+
+- When creating interactive tutorials, code walkthroughs, or step-by-step guides that benefit from live code execution and output, generate a Jupyter Notebook (`.ipynb` file) in addition to Markdown documentation.
+- Jupyter Notebooks should:
+  - Include clear Markdown cells explaining each step, command, or concept.
+  - Provide code cells that users can execute directly to follow along with the tutorial or solution.
+  - Show expected outputs or results where possible.
+  - Be organized and easy to follow, with section headings and comments.
+- For project-specific solutions (e.g., running scripts, deploying VMs, or configuring services), create a notebook that demonstrates the process interactively, allowing users to modify parameters and see results.
+- Link to the generated Jupyter Notebook from the main documentation (e.g., `README.md`) so users can easily find and use the interactive guide.
+- Ensure all code in notebooks is tested and works as intended in the project environment.
+- Name notebooks descriptively (e.g., `interactive_vm_deployment_tutorial.ipynb`).
+- Keep notebooks up to date with project changes and document any required dependencies or setup steps at the top of the notebook.

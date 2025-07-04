@@ -1,5 +1,7 @@
 # Project File Structure
 
+Last updated: 2025-07-04
+
 This document provides a visual representation of the ProxMox VE Scripts project structure.
 
 ## Directory Structure
@@ -37,12 +39,13 @@ graph TD
 ### Root Directory
 
 - **`.gitignore`** - Git ignore patterns for Python, IDE, and temporary files
-- **`CLAUDE.md`** - Comprehensive project documentation for Claude Code AI assistant
-- **`README.md`** - Project overview and quick start guide
+- **`CLAUDE.md`** - Comprehensive project documentation, best practices, and usage guidelines for Claude Code
+- **`README.md`** - Project overview, quick start guide, and references to Jupyter notebooks
 
 ### `.claude/` Directory
 
 - **`claude_command_setup.sh`** - Setup script for Claude custom commands
+- **`settings.local.json`** - Local Claude settings and preferences
 - **`commands/`** - Custom Claude command definitions
   - **`commit.md`** - Smart commit command with version management
 

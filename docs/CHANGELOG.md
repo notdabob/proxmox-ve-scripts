@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.5.0] - 2025-07-04
+
+### Added in v2.5.0 at 2025-07-04 00:20:36 EDT
+
+- Documentation best practices section in CLAUDE.md for Claude Code usage guidelines
+- Jupyter Notebook usage guidelines for creating interactive tutorials and walkthroughs
+- References to Jupyter notebooks in README.md for interactive examples
+
+### Enhanced in v2.5.0 at 2025-07-04 00:20:36 EDT
+
+- Expanded CLAUDE.md with comprehensive documentation standards
+- Improved clarity on when to use Markdown vs Jupyter notebooks
+- Better guidance for creating interactive content alongside static documentation
+
 ## [1.1.0] - 2025-07-02
 
 ### Added in v1.1.0 at 2025-07-02 18:29:00 EDT
