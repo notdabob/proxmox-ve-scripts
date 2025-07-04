@@ -42,7 +42,7 @@ This alternative approach provides:
 ### Method 2: Create VM Only (ProxmoxVE Community Script)
 
 ```bash
-VMID=120 HOSTNAME=mcp-docker CORE=4 MEMORY=4096 DISK=40 \
+VMID=210 HOSTNAME=mcp-docker CORE=4 MEMORY=4096 DISK=40 \
 bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/vm/docker-vm.sh)"
 ```
 

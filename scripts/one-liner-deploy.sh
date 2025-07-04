@@ -7,7 +7,7 @@ echo "=== One-Click MCP Server Deployment ==="
 echo ""
 
 # Configuration
-VMID="${VMID:-120}"
+VMID="${VMID:-210}"
 HOSTNAME="${HOSTNAME:-mcp-docker}"
 CORE="${CORE:-4}"
 MEMORY="${MEMORY:-4096}"

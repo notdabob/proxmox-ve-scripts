@@ -5,7 +5,7 @@
 set -e
 
 # Default configuration
-VMID="${VMID:-120}"
+VMID="${VMID:-210}"
 HOSTNAME="${HOSTNAME:-mcp-docker}"
 CORE="${CORE:-4}"
 MEMORY="${MEMORY:-4096}"

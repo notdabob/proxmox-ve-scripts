@@ -48,14 +48,14 @@ VMID=150 HOSTNAME=my-mcp MEMORY=8192 ./scripts/one-liner-deploy.sh
 ./scripts/deploy_mcp_to_docker_vm.sh <VM_IP>
 
 # Or auto-detect IP
-./scripts/deploy_mcp_to_docker_vm.sh auto 120
+./scripts/deploy_mcp_to_docker_vm.sh auto 210
 ```
 
 ### Direct ProxmoxVE Community Script Usage
 
 ```bash
 # Create Docker VM directly
-VMID=120 HOSTNAME=docker CORE=4 MEMORY=4096 DISK=40 \
+VMID=210 HOSTNAME=docker CORE=4 MEMORY=4096 DISK=40 \
 bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/vm/docker-vm.sh)"
 ```
 
@@ -63,13 +63,13 @@ bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/v
 
 ```bash
 # Check VM status
-qm status 120
+qm status 210
 
 # Get VM IP address
-qm guest cmd 120 network-get-interfaces
+qm guest cmd 210 network-get-interfaces
 
 # Connect to VM console
-qm terminal 120
+qm terminal 210
 
 # SSH to deployed VM (default password: proxmox)
 ssh root@<VM_IP>
@@ -169,7 +169,7 @@ The deployment script (`deploy_mcp_to_docker_vm.sh`) performs:
 
 Set these environment variables before running scripts:
 
-- `VMID`: ProxMox VM identifier (default: 120)
+- `VMID`: ProxMox VM identifier (default: 210)
 - `HOSTNAME`: VM hostname (default: mcp-docker)
 - `CORE`: CPU cores (default: 4)
 - `MEMORY`: RAM in MB (default: 4096)
@@ -209,7 +209,7 @@ Currently deployed MCP servers:
 
 ```bash
 # Check if VM exists
-qm list | grep 120
+qm list | grep 210
 
 # Check ProxMox storage
 pvesm status
@@ -238,10 +238,10 @@ ssh root@<VM_IP> 'cd /opt/mcp && docker compose logs'
 ping <VM_IP>
 
 # Check QEMU Guest Agent
-qm agent 120 ping
+qm agent 210 ping
 
 # View VM network config
-qm guest cmd 120 network-get-interfaces
+qm guest cmd 210 network-get-interfaces
 ```
 
 ## Documentation Best Practices for Claude Code

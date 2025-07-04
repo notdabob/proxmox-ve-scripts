@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.2] - 2025-07-04
+
+### Fixed in v2.6.2 at 2025-07-04 01:20:50 EDT
+
+- Changed default VMID from 120 to 210 across all scripts and documentation
+- Updated one-liner-deploy.sh, create_mcp_docker_vm.sh with new default VMID
+- Updated CLAUDE.md and README.md documentation to reflect new default VMID
+
 ## [2.6.1] - 2025-07-04
 
 ### Fixed in v2.6.1 at 2025-07-04 01:04:22 EDT
