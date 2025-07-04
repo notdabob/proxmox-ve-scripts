@@ -213,3 +213,7 @@ qm guest cmd 120 network-get-interfaces
 - Ensure all code in notebooks is tested and works as intended in the project environment.
 - Name notebooks descriptively (e.g., `interactive_vm_deployment_tutorial.ipynb`).
 - Keep notebooks up to date with project changes and document any required dependencies or setup steps at the top of the notebook.
+
+## File Structure Documentation Rule
+
+- Do not prompt to update or modify `docs/file-structure.md` unless explicitly requested by the user.
