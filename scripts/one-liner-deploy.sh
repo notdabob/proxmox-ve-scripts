@@ -25,9 +25,18 @@ echo ""
 VMID=$VMID HOSTNAME=$HOSTNAME CORE=$CORE MEMORY=$MEMORY DISK=$DISK \
 bash -c "$(wget -qLO - https://github.com/community-scripts/ProxmoxVE/raw/main/vm/docker-vm.sh)"
 
-echo ""
+# After VM creation and initial boot wait
 echo "Waiting for VM to boot (60 seconds)..."
 sleep 60
+
+# Install qemu-guest-agent and fix DNS using qm guest exec
+echo "Ensuring qemu-guest-agent is installed and DNS is set..."
+qm guest exec $VMID -- bash -c "echo 'nameserver 8.8.8.8' > /etc/resolv.conf"
+qm guest exec $VMID -- bash -c "apt-get update"
+qm guest exec $VMID -- bash -c "apt-get install -y qemu-guest-agent"
+
+# Optionally, restart the agent
+qm guest exec $VMID -- systemctl restart qemu-guest-agent
 
 # Try to get VM IP
 echo "Detecting VM IP address..."

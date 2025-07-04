@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.6.1] - 2025-07-04
+
+### Fixed in v2.6.1 at 2025-07-04 01:04:22 EDT
+
+- Fixed VM deployment reliability by ensuring qemu-guest-agent installation
+- Added DNS resolution fix during VM setup to prevent package installation failures
+- Improved one-liner-deploy.sh script with proper guest agent configuration
+
 ## [2.6.0] - 2025-07-04
 
 ### Enhanced in v2.6.0 at 2025-07-04 00:36:50 EDT
